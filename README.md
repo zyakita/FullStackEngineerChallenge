@@ -14,10 +14,11 @@ Design a web application that allows employees to submit feedback toward each ot
 
 - List of performance reviews requiring feedback
 - Submit feedback
+<hr>
 
-# High Level Design
+## High Level Design
 
-## API server
+### API server
 
 Overview of ExpressJS API server:
 
@@ -31,18 +32,53 @@ If middlewares throw any errors, a message will be sent to client as HTTP respon
 
 Controllers connect with database (SQLite), get data, execute logic code and send HTTP response to client depend on its request.
 
-### Technology
+#### Technology
 
 - [ExpressJS](https://github.com/expressjs/express)
-- [Bcryptjs](https://github.com/dcodeIO/bcrypt.js)
-- [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-- [Sequelize](https://github.com/sequelize/sequelize)
-- SQLite
+- [Bcryptjs](https://github.com/dcodeIO/bcrypt.js): help to add a salt (additional random data) to the hashing password process, [that makes each password hash unique](https://auth0.com/blog/hashing-in-action-understanding-bcrypt/).
+- [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken): help to create time-limited json token, api will check this token to verify user's identity.
+- [Sequelize](https://github.com/sequelize/sequelize) is a promise-based Node.js ORM, help to save time in writing raw SQL queries thereby reducing development time.
+- SQLite, for quickly launch sample project and testing purpose.
 
-Bcrypt help to add a salt (additional random data) to the hashing password process, [that makes each password hash unique](https://auth0.com/blog/hashing-in-action-understanding-bcrypt/).
+<hr>
 
-Jsonwebtoken help to create time-limited json token, server can use this token to verify user's identity. And avoid to using traditional SESSION ID validate way - which is consider as [difficult to scale](https://hackernoon.com/why-do-we-need-the-json-web-token-jwt-in-the-modern-web-k29l3sfd).
+## Installation
 
-Sequelize is a promise-based Node.js ORM, help us to save time in writing raw SQL queries thereby reducing development time.
+Clone this repository
 
-SQLite, better for quickly launch sample project and testing purpose.
+```bash
+git clone https://github.com/zyakita/FullStackEngineerChallenge.git
+```
+
+### API server
+
+1. Change dir to `server` folder
+
+```bash
+cd server
+```
+
+2. Create .env file
+
+- PORT: api server's port
+- WEB_CLIENT_URL: full url to web client
+- AUTH_SECRET_KEY: server use this value to sign & verify jwt token
+- AUTH_TOKEN_EXPIRE: Expired time of single jwt token
+
+```bash
+cp .env.sample .env
+```
+
+3. Install dependancies
+
+```bash
+yarn install
+```
+
+4. Start app
+
+```bash
+yarn dev
+```
+
+Testing: Test cases (unit test) can be found under folder `__test__`, use command `yarn test` to run test cases
