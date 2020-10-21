@@ -16,6 +16,7 @@ exports.signin = (req, res) => {
   db.User.findOne({
     where: {
       email: req.body.email,
+      isDeleted: false,
     },
   })
     .then((user) => {

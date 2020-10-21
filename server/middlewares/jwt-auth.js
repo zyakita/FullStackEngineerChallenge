@@ -22,6 +22,23 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const isEmailUsable = (req, res, next) => {
+  db.User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  }).then((user) => {
+    if (user) {
+      res.status(400).send({
+        message: 'Email is already in use!',
+      });
+      return;
+    }
+
+    next();
+  });
+};
+
 const isAdmin = (req, res, next) => {
   db.User.findByPk(req.userId).then((user) => {
     if (user.role === 'admin') {
@@ -37,5 +54,6 @@ const isAdmin = (req, res, next) => {
 
 module.exports = {
   verifyToken: verifyToken,
+  isEmailUsable: isEmailUsable,
   isAdmin: isAdmin,
 };
