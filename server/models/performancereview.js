@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
       });
+      PerformanceReview.hasMany(models.PerformanceFeedback, {
+        foreignKey: 'prId',
+      });
     }
   }
   PerformanceReview.init(
