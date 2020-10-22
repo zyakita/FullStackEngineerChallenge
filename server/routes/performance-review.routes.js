@@ -35,6 +35,13 @@ module.exports = function (app) {
     prController.getById
   );
 
+  // get by userId
+  app.get(
+    '/api/performance-reviews/user/:userId',
+    [jwtAuth.verifyToken, jwtAuth.isAdmin],
+    prController.getByUserId
+  );
+
   // update by id (only admin can update)
   app.put(
     '/api/performance-review/:id',

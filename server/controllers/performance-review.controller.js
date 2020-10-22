@@ -41,12 +41,10 @@ exports.getAll = (req, res) => {
 // get my performance reviews,
 // use jwt token to detect userId
 exports.getMy = (req, res) => {
-  db.PerformanceReview.findAndCountAll({
+  db.PerformanceReview.findAll({
     attributes: ['id', 'title', 'createdAt', 'updatedAt'],
     where: { isDeleted: false, userId: req.userId },
     order: [['id', 'DESC']],
-    limit: req.query.limit,
-    offset: req.skip,
     include: [
       {
         model: db.User,
@@ -56,14 +54,29 @@ exports.getMy = (req, res) => {
     ],
   })
     .then((results) => {
-      let itemCount = results.count;
-      let pageCount = Math.ceil(results.count / req.query.limit);
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      // return 500 internal server error if any error occurs
+      res.status(500).send({ message: err.message });
+    });
+};
 
-      res.status(200).send({
-        prs: results.rows,
-        pageCount,
-        itemCount,
-      });
+exports.getByUserId = (req, res) => {
+  db.PerformanceReview.findAll({
+    attributes: ['id', 'title', 'createdAt', 'updatedAt'],
+    where: { isDeleted: false, userId: req.params.userId },
+    order: [['id', 'DESC']],
+    include: [
+      {
+        model: db.User,
+        where: { isDeleted: false },
+        attributes: ['id', 'name', 'email'],
+      },
+    ],
+  })
+    .then((results) => {
+      res.status(200).send(results);
     })
     .catch((err) => {
       // return 500 internal server error if any error occurs
