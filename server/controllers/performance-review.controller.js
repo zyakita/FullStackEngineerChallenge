@@ -45,13 +45,6 @@ exports.getMy = (req, res) => {
     attributes: ['id', 'title', 'createdAt', 'updatedAt'],
     where: { isDeleted: false, userId: req.userId },
     order: [['id', 'DESC']],
-    include: [
-      {
-        model: db.User,
-        where: { isDeleted: false },
-        attributes: ['id', 'name', 'email'],
-      },
-    ],
   })
     .then((results) => {
       res.status(200).send(results);
@@ -67,13 +60,6 @@ exports.getByUserId = (req, res) => {
     attributes: ['id', 'title', 'createdAt', 'updatedAt'],
     where: { isDeleted: false, userId: req.params.userId },
     order: [['id', 'DESC']],
-    include: [
-      {
-        model: db.User,
-        where: { isDeleted: false },
-        attributes: ['id', 'name', 'email'],
-      },
-    ],
   })
     .then((results) => {
       res.status(200).send(results);
