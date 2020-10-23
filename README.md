@@ -125,4 +125,10 @@ Please use follwing credentials to login:
 
 Administrator: admin@example.com / 123456
 
-Employee: user50@example.com / 123456 user49@example.com / 123456 user48@example.com / 123456 ... user2@example.com / 123456
+Employee:
+
+user50@example.com / 123456
+
+user49@example.com / 123456
+
+user48@example.com / 123456 ... user2@example.com / 123456
