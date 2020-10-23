@@ -1,0 +1,19 @@
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.handle-icon {
+  cursor: pointer;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+.handle-icon:hover {
+  opacity: 0.6;
+}
