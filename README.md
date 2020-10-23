@@ -35,10 +35,24 @@ Controllers connect with database (SQLite), get data, execute logic code and sen
 #### Technology
 
 - [ExpressJS](https://github.com/expressjs/express)
-- [Bcryptjs](https://github.com/dcodeIO/bcrypt.js): help to add a salt (additional random data) to the hashing password process, [that makes each password hash unique](https://auth0.com/blog/hashing-in-action-understanding-bcrypt/).
-- [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken): help to create time-limited json token, api will check this token to verify user's identity.
-- [Sequelize](https://github.com/sequelize/sequelize) is a promise-based Node.js ORM, help to save time in writing raw SQL queries thereby reducing development time.
+- [Bcryptjs](https://github.com/dcodeIO/bcrypt.js)
+- [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [Sequelize](https://github.com/sequelize/sequelize)
 - SQLite, for quickly launch sample project and testing purpose.
+
+### Web client
+
+<img src="./images/client.png" alt="web client" width="450px"/>
+
+#### Technology
+
+- [React](https://github.com/facebook/react)
+- [react-redux](https://github.com/reduxjs/react-redux)
+- [redux](https://github.com/reduxjs/redux)
+- [redux-thunk](https://github.com/reduxjs/redux-thunk)
+- [react-router-dom](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom)
+- [axios](https://github.com/axios/axios)
+- [Bootstrap 4](https://github.com/twbs/bootstrap)
 
 <hr>
 
@@ -81,4 +95,34 @@ yarn install
 yarn dev
 ```
 
-Testing: Test cases (unit test) can be found under folder `__test__`, use command `yarn test` to run test cases
+### Web client
+
+1. Change dir to `web` folder
+
+```bash
+cd web
+```
+
+2. Install dependancies
+
+```bash
+yarn install
+```
+
+3. Start app
+
+```bash
+yarn dev
+```
+
+<hr>
+
+## Demo Data
+
+In the `development` env, API server auto seeds some demo data for testing purpose.
+
+Please use follwing credentials to login:
+
+Administrator: admin@example.com / 123456
+
+Employee: user50@example.com / 123456 user49@example.com / 123456 user48@example.com / 123456 ... user2@example.com / 123456
