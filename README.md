@@ -22,7 +22,7 @@ Design a web application that allows employees to submit feedback toward each ot
 
 Overview of ExpressJS API server:
 
-<img src="./images/server.png" alt="api server" width="450px"/>
+<img src="./images/server.png" alt="api server" width="550px"/>
 
 HTTP request that matched a route will be check by CORS Middleware, then pass to Security layer.
 
@@ -42,7 +42,7 @@ Controllers connect with database (SQLite), get data, execute logic code and sen
 
 ### Web client
 
-<img src="./images/client.png" alt="web client" width="450px"/>
+<img src="./images/client.png" alt="web client" width="550px"/>
 
 #### Technology
 
