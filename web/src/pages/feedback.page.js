@@ -65,7 +65,6 @@ class FeedbackPage extends React.Component {
 
   render() {
     const { fbId, fbDetail, feedbackSucess } = this.state;
-    const { user } = this.props;
     return (
       <div>
         <div className="pb-2 mt-4 mb-2 border-bottom">
