@@ -2,7 +2,7 @@
 
 let seedPRs = [];
 
-for (let i = 1; i <= 20; i++) {
+for (let i = 1; i <= 40; i++) {
   seedPRs.push({
     id: i,
     userId: Math.floor(Math.random() * (50 - 40 + 1) + 40), // random between 40~50

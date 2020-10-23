@@ -32,13 +32,7 @@ describe('Testing the Performance review API', () => {
     supertest(app)
       .get('/api/performance-reviews')
       .set({ 'x-access-token': adminJWT })
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-
-        expect(res.body).toHaveProperty('prs');
-        done();
-      });
+      .expect(200, done);
   });
 
   it('get pr with admin JWT, return status code 200', function (done) {
@@ -116,13 +110,7 @@ describe('Testing the Performance review API', () => {
     supertest(app)
       .get('/api/performance-reviews/me')
       .set({ 'x-access-token': userJWT })
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-
-        expect(res.body).toHaveProperty('prs');
-        done();
-      });
+      .expect(200, done);
   });
 
   var feedbackId = '';

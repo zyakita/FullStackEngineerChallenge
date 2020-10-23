@@ -26,6 +26,20 @@ module.exports = function (app) {
     prController.getMy
   );
 
+  // get all my feedback requests
+  app.get(
+    '/api/performance-reviews/requests-me',
+    [jwtAuth.verifyToken],
+    prController.getMyFeedbackRequests
+  );
+
+  // feedback detail
+  app.get(
+    '/api/performance-reviews/feedback/:fbId',
+    [jwtAuth.verifyToken],
+    prController.getMyFeedbackDetail
+  );
+
   // get pr by id
   // TODO: permission
   // only owner/admin/people whoes going to provide feedback can request

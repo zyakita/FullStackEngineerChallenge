@@ -192,13 +192,69 @@ exports.create = (req, res) => {
     });
 };
 
+// get My feedbacks request
+exports.getMyFeedbackRequests = (req, res) => {
+  db.PerformanceFeedback.findAll({
+    attributes: ['id', 'status', 'createdAt'],
+    where: { userId: req.userId, isDeleted: false },
+    order: [['id', 'DESC']],
+    include: [
+      {
+        model: db.PerformanceReview,
+        attributes: ['id', 'title'],
+        include: [
+          {
+            model: db.User,
+            attributes: ['id', 'name', 'email', 'isDeleted'],
+          },
+        ],
+      },
+    ],
+  })
+    .then((results) => {
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      // return 500 internal server error if any error occurs
+      res.status(500).send({ message: err.message });
+    });
+};
+
+// get My feedbacks deatil
+exports.getMyFeedbackDetail = (req, res) => {
+  db.PerformanceFeedback.findOne({
+    attributes: ['id', 'content', 'status', 'createdAt'],
+    where: { userId: req.userId, id: req.params.fbId, isDeleted: false },
+    include: [
+      {
+        model: db.PerformanceReview,
+        attributes: ['id', 'title', 'description'],
+        include: [
+          {
+            model: db.User,
+            attributes: ['id', 'name', 'email', 'isDeleted'],
+          },
+        ],
+      },
+    ],
+  })
+    .then((results) => {
+      if (!results) {
+        return res.status(404).send({ message: 'Feedback do not exist!' });
+      }
+      return res.status(200).send(results);
+    })
+    .catch((err) => {
+      // return 500 internal server error if any error occurs
+      return res.status(500).send({ message: err.message });
+    });
+};
+
 // get all feedbacks
 exports.getFeedbacks = (req, res) => {
-  db.PerformanceFeedback.findAndCountAll({
+  db.PerformanceFeedback.findAll({
     where: { prId: req.params.prId, isDeleted: false },
     order: [['id', 'DESC']],
-    limit: req.query.limit,
-    offset: req.skip,
     include: [
       {
         model: db.User,
@@ -207,14 +263,7 @@ exports.getFeedbacks = (req, res) => {
     ],
   })
     .then((results) => {
-      let itemCount = results.count;
-      let pageCount = Math.ceil(results.count / req.query.limit);
-
-      res.status(200).send({
-        pbs: results.rows,
-        pageCount,
-        itemCount,
-      });
+      res.status(200).send(results);
     })
     .catch((err) => {
       // return 500 internal server error if any error occurs
@@ -225,25 +274,50 @@ exports.getFeedbacks = (req, res) => {
 // request feedback
 exports.requestFeedback = (req, res) => {
   // validate params
-  if (!req.body.userId) {
-    return res.status(400).send({ message: 'userId required!' });
+  if (!req.body.query) {
+    return res.status(400).send({ message: 'userId or email is required!' });
   }
-  // TODO: prevent pr.userId === req.body.userId
-  // (only allow others to provide feedback)
+  let search_user_condition = {};
+  if (!req.body.query.includes('@')) {
+    search_user_condition = { id: parseInt(req.body.query) };
+  } else {
+    search_user_condition = { email: req.body.query };
+  }
+  // 1. search and validate user
+  db.User.findOne({
+    where: {
+      ...search_user_condition,
+      isDeleted: false,
+    },
+  }).then((user) => {
+    if (!user) {
+      return res.status(400).send({ message: 'Employee do not exist!' });
+    }
 
-  // create new pb and save to db
-  db.PerformanceFeedback.create({
-    prId: req.params.prId,
-    userId: req.body.userId,
-    status: PB_STATUS_NEW,
-  })
-    .then((newPB) => {
-      res.status(200).send(newPB);
-    })
-    .catch((err) => {
-      // return 500 internal server error if any error occurs
-      res.status(500).send({ message: err.message });
+    // TODO: prevent pr.userId === req.body.userId
+    // (only allow others to provide feedback)
+    db.PerformanceFeedback.findOne({
+      where: {
+        prId: req.params.prId,
+        userId: user.id,
+        isDeleted: false,
+      },
+    }).then((pb) => {
+      if (pb) {
+        return res
+          .status(400)
+          .send({ message: 'Already requested this user before!' });
+      }
+      // create new pb and save to db
+      db.PerformanceFeedback.create({
+        prId: req.params.prId,
+        userId: user.id,
+        status: PB_STATUS_NEW,
+      }).then((newPB) => {
+        return res.status(200).send(newPB);
+      });
     });
+  });
 };
 
 // submit new feedback
