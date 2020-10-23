@@ -22,7 +22,7 @@
     "validator": "^13.1.17"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3300 react-scripts start",
     "dev": "PORT=3300 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
